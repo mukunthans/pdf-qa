@@ -2,9 +2,32 @@ import PyPDF2
 import io
 import logging
 
-# Set up logging for debugging
-logging.basicConfig(level=logging.INFO)
+import os
+from datetime import datetime
+
+# Create logs directory if it doesn't exist
+os.makedirs("logs", exist_ok=True)
+
+# Define log file path (single file for all runs)
+log_file_path = os.path.join("logs", "pdf_extraction.log")
+
+# Configure logging to file with timestamps
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(log_file_path, mode='a', encoding='utf-8'),
+        logging.StreamHandler()  # keep console output
+    ]
+)
+
+# Create logger object
 logger = logging.getLogger(__name__)
+
+# Mark the start of a new run
+logger.info("========== New run started ==========")
+
+
 
 def extract_text_from_pdf(uploaded_file):
     """
